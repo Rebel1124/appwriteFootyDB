@@ -255,7 +255,7 @@ def main(context):
     #         context.log(f"An error occurred: {str(e)}")
     #         return None
 
-    def get_all_document_ids(db_id, db_collection, databases):
+    def get_all_document_ids(db_id, db_collection):
         document_ids = []
         last_id = None
         limit = 100  # You can adjust this based on your needs
