@@ -13,13 +13,12 @@ import os
 
 def main(context):
 
+    client = Client()
+
     project_id = os.environ('APPWRITE_PROJECT_ID')
     api_key = os.environ('APPWRITE_API_KEY')
     database_id = os.environ('APPWRITE_DB_ID')
     upcomingMatches_collection_id = os.environ('UPCOMING_MATCHES_COLLECTION_ID')
-    
-    
-    client = Client()
     
     client = (client
         .set_endpoint('https://cloud.appwrite.io/v1') # Your API Endpoint
