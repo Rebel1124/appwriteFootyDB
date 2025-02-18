@@ -363,7 +363,7 @@ def main(context):
                 context.log('Initial Attributes added for '+ upcomingMatches_collection_id)
     
             if (len(classifications['attrID']) == len(attr_categories['attrID'])):
-                context.log('id category all good')
+                context.log('ids category all good')
             else:
                 missingID=list(set(classifications['attrID']) - set(attr_categories['attrID']))
                 # Create rowID attributes
