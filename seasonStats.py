@@ -30,10 +30,10 @@ def main(context):
     
     
     currSeasonID=['12325', '13284']
-    currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
-    allSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
-    allSeasonNames = ['EPL_2020-2021', 'EPL_2021-2022', 'EPL-2022-2023', 'EPL-2023-2024', 'EPL_2024-2025',
-                   'PSL_2020-2021', 'PSL_2021-2022', 'PSL-2022-2023', 'PSL-2023-2024', 'PSL_2024-2025']
+    # currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
+    # allSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
+    # allSeasonNames = ['EPL_2020-2021', 'EPL_2021-2022', 'EPL-2022-2023', 'EPL-2023-2024', 'EPL_2024-2025',
+    #                'PSL_2020-2021', 'PSL_2021-2022', 'PSL-2022-2023', 'PSL-2023-2024', 'PSL_2024-2025']
     
     count = len(currSeasonID)
     
@@ -447,22 +447,22 @@ def main(context):
                         docUpdate=databases.update_document(
                             database_id=database_id,
                             collection_id=seasonStats_collection_id,
-                            document_id=currSeasonNames[i],
+                            document_id=season['id'],
                             data=season
                         )
                         
-                        context.log(currSeasonNames[i]+' Updated')
+                        context.log(season['id']+' Updated')
     
                     else:
                         try:
                             databases.create_document(
                             database_id=database_id,
                             collection_id=seasonStats_collection_id,
-                            document_id=currSeasonNames[i],
+                            document_id=season['id'],
                             data=season
                             )
                             
-                            context.log('Documents created for '+currSeasonNames[i])
+                            context.log('Documents created for '+season['id'])
                         except Exception as e:
                     
                             context.log(f"\nError creating document:")
@@ -476,7 +476,7 @@ def main(context):
                                 context.log(f"Preview: {str(season[field_name])[:100]}...")
                 
                 except:
-                    context.log('Check document '+ str(currSeasonNames[i]))
+                    context.log('Check document '+ str(season['id']))
     
     return context.res.empty()
 
