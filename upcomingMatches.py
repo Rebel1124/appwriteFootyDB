@@ -196,37 +196,71 @@ def main(context):
         
         return column_groups
     
-    
-    
+    # def get_all_document_ids(db_id, db_collection):
+    #     document_ids = []
+    #     offset = 0
+    #     limit = 100
+        
+    #     try:
+    #         while True:
+    #             response = databases.list_documents(
+    #                 database_id=db_id,
+    #                 collection_id=db_collection,
+    #                 queries=[
+    #                     Query.limit(limit),
+    #                     Query.offset(offset)
+    #                 ]
+    #             )
+                
+    #             if not response['documents']:
+    #                 break
+                
+    #             # document_ids.extend([doc['$id'] for doc in response['documents']])
+    #             document_ids.extend([doc['id'] for doc in response['documents']])
+    #             offset += limit
+                
+    #         return document_ids
+            
+    #     except Exception as e:
+    #         context.log(f"An error occurred: {str(e)}")
+    #         return None
+
     def get_all_document_ids(db_id, db_collection):
         document_ids = []
-        offset = 0
-        limit = 100
+        last_id = None
+        limit = 100  # You can adjust this based on your needs
         
         try:
             while True:
+                # Use cursor-based pagination instead of offset
+                queries = [Query.limit(limit)]
+                if last_id:
+                    queries.append(Query.cursor_after(last_id))
+                
                 response = databases.list_documents(
                     database_id=db_id,
                     collection_id=db_collection,
-                    queries=[
-                        Query.limit(limit),
-                        Query.offset(offset)
-                    ]
+                    queries=queries
                 )
                 
                 if not response['documents']:
                     break
+                    
+                # Use list comprehension for better performance
+                batch_ids = [doc['id'] for doc in response['documents']]
+                document_ids.extend(batch_ids)
                 
-                # document_ids.extend([doc['$id'] for doc in response['documents']])
-                document_ids.extend([doc['id'] for doc in response['documents']])
-                offset += limit
-                
+                # Update the cursor for the next batch
+                if batch_ids:
+                    last_id = batch_ids[-1]
+                else:
+                    break
+                    
             return document_ids
             
         except Exception as e:
             context.log(f"An error occurred: {str(e)}")
             return None
-        
     
     def get_categorized_attributes(db_id, coll_id):
     
