@@ -201,42 +201,6 @@ def main(context):
         return column_groups
     
     
-    # def get_all_document_ids(db_id, db_collection):
-    #     # client = Client()
-    #     # client.set_endpoint('YOUR_ENDPOINT')
-    #     # client.set_project('YOUR_PROJECT_ID')
-    #     # client.set_key('YOUR_API_KEY')
-    
-    #     # databases = Databases(client)
-    #     document_ids = []
-    #     offset = 0
-    #     limit = 100
-        
-    #     try:
-    #         while True:
-    #             response = databases.list_documents(
-    #                 database_id=db_id,
-    #                 collection_id=db_collection,
-    #                 queries=[
-    #                     Query.limit(limit),
-    #                     Query.offset(offset)
-    #                 ]
-    #             )
-                
-    #             if not response['documents']:
-    #                 break
-                
-    #             # document_ids.extend([doc['$id'] for doc in response['documents']])
-    #             document_ids.extend([doc['id'] for doc in response['documents']])
-    #             offset += limit
-                
-    #         return document_ids
-            
-    #     except Exception as e:
-    #         context.log(f"An error occurred: {str(e)}")
-    #         return None
-
-    
     def get_all_document_ids(db_id, db_collection):
         document_ids = []
         last_id = None
