@@ -40,7 +40,7 @@ def main(context):
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
-            print(f"Error retrieving data: {e}")
+            context.log(f"Error retrieving data: {e}")
             return None
         
     
@@ -122,7 +122,7 @@ def main(context):
                 # If it's not a string, convert directly to JSON string
                 return json.dumps(value)
         except Exception as e:
-            print(f"Error converting value to JSON string: {str(e)}")
+            context.log(f"Error converting value to JSON string: {str(e)}")
             return str(value)
     
     def prepare_for_appwrite(df):
@@ -143,7 +143,7 @@ def main(context):
                     else:
                         processed_record[key] = value
                 except Exception as e:
-                    print(f"Error processing field {key}: {str(e)}")
+                    context.log(f"Error processing field {key}: {str(e)}")
                     processed_record[key] = str(value)
             
             processed_records.append(processed_record)
@@ -225,7 +225,7 @@ def main(context):
             return document_ids
         
         except Exception as e:
-            print(f"An error occurred: {str(e)}")
+            context.log(f"An error occurred: {str(e)}")
             return None
     
     def get_categorized_attributes(db_id, coll_id):
@@ -261,12 +261,12 @@ def main(context):
                 elif attr_type in categorized_attrs:
                     categorized_attrs[attr_type].append(attr_key)
                 else:
-                    print(f"Warning: Unhandled attribute type '{attr_type}' for key '{attr_key}'")
+                    context.log(f"Warning: Unhandled attribute type '{attr_type}' for key '{attr_key}'")
         
             return categorized_attrs
     
         except Exception as e:
-            print(f"An error occurred: {str(e)}")
+            context.log(f"An error occurred: {str(e)}")
             return None
     
     
@@ -329,7 +329,7 @@ def main(context):
     
     
         except Exception as e:
-            print(f"Error creating attributes: {str(e)}")
+            context.log(f"Error creating attributes: {str(e)}")
     
     # Retrieve country data
     country_data = get_country_list()
@@ -350,7 +350,7 @@ def main(context):
     
             attr_categories = get_categorized_attributes(database_id, countryList_collection_id)
     
-            # print(attList)
+            # context.log(attList)
     
             if (attList['total'] == 0):
                 # classifications=group_columns(upcoming_matches['data'])
@@ -360,10 +360,10 @@ def main(context):
                 collection_id=countryList_collection_id 
                 )
     
-                print('Initial Attributes added for '+ countryList_collection_id)
+                context.log('Initial Attributes added for '+ countryList_collection_id)
     
             if (len(classifications['attrID']) == len(attr_categories['attrID'])):
-                print('ids category all good')
+                context.log('ids category all good')
             else:
                 missingID=list(set(classifications['attrID']) - set(attr_categories['attrID']))
                 # Create rowID attributes
@@ -377,7 +377,7 @@ def main(context):
                     )
     
             if (len(classifications['float']) == len(attr_categories['float'])):
-                print('float category all good')
+                context.log('float category all good')
             else:
                 missingFloat=list(set(classifications['float']) - set(attr_categories['float']))
                 # Create float attributes
@@ -393,7 +393,7 @@ def main(context):
     
     
             if (len(classifications['array']) == len(attr_categories['array'])):
-                print('array category all good')
+                context.log('array category all good')
             else:
                 missingArray=list(set(classifications['array']) - set(attr_categories['array']))
                 # Create array attributes
@@ -409,7 +409,7 @@ def main(context):
     
     
             if (len(classifications['string']) == len(attr_categories['string'])):
-                print('string category all good')
+                context.log('string category all good')
             else:
                 missingString=list(set(classifications['string']) - set(attr_categories['string']))
         
@@ -425,7 +425,7 @@ def main(context):
                 )
     
         except:
-             print('Check attributes for '+ str(countryList_collection_id))
+             context.log('Check attributes for '+ str(countryList_collection_id))
     
         try:
             if(len(docIDs) > 0):
@@ -437,11 +437,11 @@ def main(context):
                         document_id=id,
                     )
                     
-                    print(id+' Deleted')
+                    context.log(id+' Deleted')
             else:
-                print("No matches to delete")
+                context.log("No matches to delete")
         except:
-            print("No matches to delete")
+            context.log("No matches to delete")
                     
         for country in countryDataJSON:
     
@@ -453,18 +453,18 @@ def main(context):
                 data=country
                 )
     
-                print('Documents created for '+country['country'])
+                context.log('Documents created for '+country['country'])
             except Exception as e:
             
-                print(f"\nError creating document:")
-                print(f"Error message: {str(e)}")
-                # Print details of the problematic field
+                context.log(f"\nError creating document:")
+                context.log(f"Error message: {str(e)}")
+                # context.log details of the problematic field
                 field_name = str(e).split("'")[1].split("'")[0] if "'" in str(e) else None
                 if field_name and field_name in country:
-                    print(f"\nProblem field details:")
-                    print(f"{field_name} type: {type(country[field_name])}")
-                    print(f"{field_name} length: {len(str(country[field_name]))}")
-                    print(f"Preview: {str(country[field_name])[:100]}...")
+                    context.log(f"\nProblem field details:")
+                    context.log(f"{field_name} type: {type(country[field_name])}")
+                    context.log(f"{field_name} length: {len(str(country[field_name]))}")
+                    context.log(f"Preview: {str(country[field_name])[:100]}...")
 
     return context.res.empty()
 
