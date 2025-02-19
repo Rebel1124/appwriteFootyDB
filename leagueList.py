@@ -12,6 +12,7 @@ import ast
 import os
 
 def main(context):
+    
     client = Client()
     
     project_id = os.environ['APPWRITE_PROJECT_ID']
