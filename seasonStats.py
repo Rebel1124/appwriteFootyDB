@@ -41,12 +41,12 @@ def main(context):
     #Get Season Stats
     def get_season_stats(leagueID):
         url = "https://api.football-data-api.com/league-season"
-        paramsLeague = {
+        params = {
             "key": footy_stats_key,
             "season_id": str(leagueID)
         }
         try:
-            response = requests.get(url, params=paramsLeague)
+            response = requests.get(url, params=params)
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
