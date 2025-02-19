@@ -24,22 +24,22 @@ def main(context):
     
     count = len(currSeasonID)
     
-    project_id = os.getenv('APPWRITE_PROJECT_ID')
-    api_key = os.getenv('APPWRITE_API_KEY')
-    database_id = os.getenv('APPWRITE_DB_ID')
-    footy_stats_key=os.getenv('FOOTY_STATS_KEY')
+    project_id = os.environ['APPWRITE_PROJECT_ID']
+    api_key = os.environ['APPWRITE_API_KEY']
+    database_id = os.environ['APPWRITE_DB_ID']
+    footy_stats_key=os.environ['FOOTY_STATS_KEY']
     
-    teamStats_collection_id = [os.getenv('TEAM_STATS_EPL24_25'), os.getenv('TEAM_STATS_PSL24_25')]
-    # teamStats_collection_id = [os.getenv('TEAM_STATS_EPL20_21'),
-    #                                os.getenv('TEAM_STATS_EPL21_22'),
-    #                                os.getenv('TEAM_STATS_EPL22_23'),
-    #                                os.getenv('TEAM_STATS_EPL23_24'),
-    #                                os.getenv('TEAM_STATS_EPL24_25'),
-    #                                os.getenv('TEAM_STATS_PSL20_21'),
-    #                                os.getenv('TEAM_STATS_PSL21_22'),
-    #                                os.getenv('TEAM_STATS_PSL22_23'),
-    #                                os.getenv('TEAM_STATS_PSL23_24'),
-    #                                os.getenv('TEAM_STATS_PSL24_25')]
+    teamStats_collection_id = [os.environ['TEAM_STATS_EPL24_25'], os.environ['TEAM_STATS_PSL24_25']]
+    # teamStats_collection_id = [os.environ['TEAM_STATS_EPL20_21'],
+    #                                os.environ['TEAM_STATS_EPL21_22'],
+    #                                os.environ['TEAM_STATS_EPL22_23'],
+    #                                os.environ['TEAM_STATS_EPL23_24'],
+    #                                os.environ['TEAM_STATS_EPL24_25'],
+    #                                os.environ['TEAM_STATS_PSL20_21'],
+    #                                os.environ['TEAM_STATS_PSL21_22'],
+    #                                os.environ['TEAM_STATS_PSL22_23'],
+    #                                os.environ['TEAM_STATS_PSL23_24'],
+    #                                os.environ['TEAM_STATS_PSL24_25']]
 
     
     client = (client
