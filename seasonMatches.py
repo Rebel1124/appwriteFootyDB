@@ -52,13 +52,13 @@ def main(context):
     #Get League Matches
     def get_league_matches(leagueID, games=500):
         url = "https://api.football-data-api.com/league-matches"
-        paramsLeague = {
+        params = {
             "key": footy_stats_key,
             "season_id": str(leagueID),
             "max_per_page": str(games)
         }
         try:
-            response = requests.get(url, params=paramsLeague)
+            response = requests.get(url, params=params)
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
