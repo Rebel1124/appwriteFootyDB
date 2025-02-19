@@ -19,6 +19,7 @@ def main(context):
     api_key = os.environ['APPWRITE_API_KEY']
     database_id = os.environ['APPWRITE_DB_ID']
     btts_collection_id = os.environ['BTTS_LIST_COLLECTION_ID']
+    footy_stats_key=os.environ['FOOTY_STATS_KEY']
     
     client = (client
         .set_endpoint('https://cloud.appwrite.io/v1') # Your API Endpoint
@@ -32,7 +33,7 @@ def main(context):
     def get_btts_stats():
         url = "https://api.football-data-api.com/stats-data-btts"
         params = {
-        "key": "2d175fcc2f3c25f0a2a6f27e9ff2c662ca850cdc2fdac707296be94f83ddd837"
+        "key": footy_stats_key
     }
         try:
             response = requests.get(url, params=params)
