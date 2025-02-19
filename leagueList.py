@@ -42,7 +42,7 @@ def get_league_list():
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
-        print(f"Error retrieving data: {e}")
+        context.log(f"Error retrieving data: {e}")
         return None
     
 
@@ -125,7 +125,7 @@ def convert_to_json_string(value):
             # If it's not a string, convert directly to JSON string
             return json.dumps(value)
     except Exception as e:
-        print(f"Error converting value to JSON string: {str(e)}")
+        context.log(f"Error converting value to JSON string: {str(e)}")
         return str(value)
 
 def prepare_for_appwrite(df):
@@ -146,7 +146,7 @@ def prepare_for_appwrite(df):
                 else:
                     processed_record[key] = value
             except Exception as e:
-                print(f"Error processing field {key}: {str(e)}")
+                context.log(f"Error processing field {key}: {str(e)}")
                 processed_record[key] = str(value)
         
         processed_records.append(processed_record)
@@ -228,7 +228,7 @@ def get_all_document_ids(db_id, db_collection):
         return document_ids
     
     except Exception as e:
-        print(f"An error occurred: {str(e)}")
+        context.log(f"An error occurred: {str(e)}")
         return None
 
 def get_categorized_attributes(db_id, coll_id):
@@ -264,12 +264,12 @@ def get_categorized_attributes(db_id, coll_id):
             elif attr_type in categorized_attrs:
                 categorized_attrs[attr_type].append(attr_key)
             else:
-                print(f"Warning: Unhandled attribute type '{attr_type}' for key '{attr_key}'")
+                context.log(f"Warning: Unhandled attribute type '{attr_type}' for key '{attr_key}'")
     
         return categorized_attrs
 
     except Exception as e:
-        print(f"An error occurred: {str(e)}")
+        context.log(f"An error occurred: {str(e)}")
         return None
 
 
@@ -332,7 +332,7 @@ def create_collection_attributes(classifications, database_id: str, collection_i
 
 
     except Exception as e:
-        print(f"Error creating attributes: {str(e)}")
+        context.log(f"Error creating attributes: {str(e)}")
 
 # Retrieve league data
 league_data = get_league_list()
@@ -353,7 +353,7 @@ if league_data and 'data' in league_data:
 
         attr_categories = get_categorized_attributes(database_id, leagueList_collection_id)
 
-        # print(attList)
+        # context.log(attList)
 
         if (attList['total'] == 0):
             # classifications=group_columns(upcoming_matches['data'])
@@ -363,10 +363,10 @@ if league_data and 'data' in league_data:
             collection_id=leagueList_collection_id 
             )
 
-            print('Initial Attributes added for '+ leagueList_collection_id)
+            context.log('Initial Attributes added for '+ leagueList_collection_id)
 
         if (len(classifications['attrName']) == len(attr_categories['attrName'])):
-            print('name category all good')
+            context.log('name category all good')
         else:
             missingID=list(set(classifications['attrName']) - set(attr_categories['attrName']))
             # Create rowID attributes
@@ -380,7 +380,7 @@ if league_data and 'data' in league_data:
                 )
 
         if (len(classifications['float']) == len(attr_categories['float'])):
-            print('float category all good')
+            context.log('float category all good')
         else:
             missingFloat=list(set(classifications['float']) - set(attr_categories['float']))
             # Create float attributes
@@ -396,7 +396,7 @@ if league_data and 'data' in league_data:
 
 
         if (len(classifications['array']) == len(attr_categories['array'])):
-            print('array category all good')
+            context.log('array category all good')
         else:
             missingArray=list(set(classifications['array']) - set(attr_categories['array']))
             # Create array attributes
@@ -412,7 +412,7 @@ if league_data and 'data' in league_data:
 
 
         if (len(classifications['string']) == len(attr_categories['string'])):
-            print('string category all good')
+            context.log('string category all good')
         else:
             missingString=list(set(classifications['string']) - set(attr_categories['string']))
     
@@ -428,7 +428,7 @@ if league_data and 'data' in league_data:
             )
 
     except:
-         print('Check attributes for '+ str(leagueList_collection_id))
+         context.log('Check attributes for '+ str(leagueList_collection_id))
 
     try:
         if(len(docIDs) > 0):
@@ -440,14 +440,14 @@ if league_data and 'data' in league_data:
                     document_id=id,
                 )
                 
-                print(id+' Deleted')
+                context.log(id+' Deleted')
         else:
-            print("No matches to delete")
+            context.log("No matches to delete")
     except:
-        print("No matches to delete")
+        context.log("No matches to delete")
                 
     for league in leagueDataJSON:
-        # print(league['name'])
+        # context.log(league['name'])
 
         try:
             databases.create_document(
@@ -457,17 +457,17 @@ if league_data and 'data' in league_data:
             data=league
             )
 
-            print('Documents created for '+league['name'])
+            context.log('Documents created for '+league['name'])
         except Exception as e:
         
-            print(f"\nError creating document:")
-            print(f"Error message: {str(e)}")
-            # Print details of the problematic field
+            context.log(f"\nError creating document:")
+            context.log(f"Error message: {str(e)}")
+            # context.log details of the problematic field
             field_name = str(e).split("'")[1].split("'")[0] if "'" in str(e) else None
             if field_name and field_name in league:
-                print(f"\nProblem field details:")
-                print(f"{field_name} type: {type(league[field_name])}")
-                print(f"{field_name} length: {len(str(league[field_name]))}")
-                print(f"Preview: {str(league[field_name])[:100]}...")
+                context.log(f"\nProblem field details:")
+                context.log(f"{field_name} type: {type(league[field_name])}")
+                context.log(f"{field_name} length: {len(str(league[field_name]))}")
+                context.log(f"Preview: {str(league[field_name])[:100]}...")
 
 
