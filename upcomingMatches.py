@@ -35,14 +35,14 @@ def main(context):
         date = datetime.now().date() + timedelta(days)
         dateString = date.strftime('%Y-%m-%d')
     
-        paramsDate = {
+        params = {
         "key": footy_stats_key,
         "date": dateString
         }
     
         url = "https://api.football-data-api.com/todays-matches"
         try:
-            response = requests.get(url, params=paramsDate)
+            response = requests.get(url, params=params)
             response.raise_for_status()
             return response.json()
         except requests.RequestException as e:
