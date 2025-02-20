@@ -25,23 +25,23 @@ currSeasonID=['12325', '13284']
 
 count = len(currSeasonID)
 
-project_id = os.getenv('APPWRITE_PROJECT_ID')
-api_key = os.getenv('APPWRITE_API_KEY')
-database_id = os.getenv('APPWRITE_DB_ID')
-footy_stats_key=os.getenv('FOOTY_STATS_KEY')
+project_id = os.environ('APPWRITE_PROJECT_ID')
+api_key = os.environ('APPWRITE_API_KEY')
+database_id = os.environ('APPWRITE_DB_ID')
+footy_stats_key=os.environ('FOOTY_STATS_KEY')
 
 
-league_table_collection_id = [os.getenv('LEAGUE_TABLE_EPL24_25'), os.getenv('LEAGUE_TABLE_PSL24_25')]
-# league_table_collection_id = [os.getenv('LEAGUE_TABLE_EPL20_21'),
-#                                os.getenv('LEAGUE_TABLE_EPL21_22'),
-#                                os.getenv('LEAGUE_TABLE_EPL22_23'),
-#                                os.getenv('LEAGUE_TABLE_EPL23_24'),
-#                                os.getenv('LEAGUE_TABLE_EPL24_25'),
-#                                os.getenv('LEAGUE_TABLE_PSL20_21'),
-#                                os.getenv('LEAGUE_TABLE_PSL21_22'),
-#                                os.getenv('LEAGUE_TABLE_PSL22_23'),
-#                                os.getenv('LEAGUE_TABLE_PSL23_24'),
-#                                os.getenv('LEAGUE_TABLE_PSL24_25')]
+league_table_collection_id = [os.environ('LEAGUE_TABLE_EPL24_25'), os.environ('LEAGUE_TABLE_PSL24_25')]
+# league_table_collection_id = [os.environ('LEAGUE_TABLE_EPL20_21'),
+#                                os.environ('LEAGUE_TABLE_EPL21_22'),
+#                                os.environ('LEAGUE_TABLE_EPL22_23'),
+#                                os.environ('LEAGUE_TABLE_EPL23_24'),
+#                                os.environ('LEAGUE_TABLE_EPL24_25'),
+#                                os.environ('LEAGUE_TABLE_PSL20_21'),
+#                                os.environ('LEAGUE_TABLE_PSL21_22'),
+#                                os.environ('LEAGUE_TABLE_PSL22_23'),
+#                                os.environ('LEAGUE_TABLE_PSL23_24'),
+#                                os.environ('LEAGUE_TABLE_PSL24_25')]
 
 client = (client
     .set_endpoint('https://cloud.appwrite.io/v1') # Your API Endpoint
@@ -63,7 +63,7 @@ def get_league_table(leagueID):
         response.raise_for_status()
         return response.json()
     except requests.RequestException as e:
-        print(f"Error retrieving data: {e}")
+        context.log(f"Error retrieving data: {e}")
         return None
     
 
@@ -153,7 +153,7 @@ def convert_to_json_string(value):
             # If it's not a string, convert directly to JSON string
             return json.dumps(value)
     except Exception as e:
-        print(f"Error converting value to JSON string: {str(e)}")
+        context.log(f"Error converting value to JSON string: {str(e)}")
         return str(value)
 
 def prepare_for_appwrite(df):
@@ -174,7 +174,7 @@ def prepare_for_appwrite(df):
                 else:
                     processed_record[key] = value
             except Exception as e:
-                print(f"Error processing field {key}: {str(e)}")
+                context.log(f"Error processing field {key}: {str(e)}")
                 processed_record[key] = str(value)
         
         processed_records.append(processed_record)
@@ -260,7 +260,7 @@ def get_all_document_ids(db_id, db_collection):
         return document_ids
     
     except Exception as e:
-        print(f"An error occurred: {str(e)}")
+        context.log(f"An error occurred: {str(e)}")
         return None
 
 def get_categorized_attributes(db_id, coll_id):
@@ -299,12 +299,12 @@ def get_categorized_attributes(db_id, coll_id):
             elif attr_type in categorized_attrs:
                 categorized_attrs[attr_type].append(attr_key)
             else:
-                print(f"Warning: Unhandled attribute type '{attr_type}' for key '{attr_key}'")
+                context.log(f"Warning: Unhandled attribute type '{attr_type}' for key '{attr_key}'")
     
         return categorized_attrs
 
     except Exception as e:
-        print(f"An error occurred: {str(e)}")
+        context.log(f"An error occurred: {str(e)}")
         return None
 
 
@@ -385,7 +385,7 @@ def create_collection_attributes(classifications, database_id: str, collection_i
         # return attributeCount
 
     except Exception as e:
-        print(f"Error creating attributes: {str(e)}")
+        context.log(f"Error creating attributes: {str(e)}")
 
 
 
@@ -411,7 +411,7 @@ for i in range(0,count):
 
             attr_categories = get_categorized_attributes(database_id, league_table_collection_id[i])
 
-            # print('Current collection has '+str(attList['total'])+' attributes')
+            # context.log('Current collection has '+str(attList['total'])+' attributes')
 
             if (attList['total'] == 0):
                 # classifications=group_columns(leagueMatches_data['data'])
@@ -420,10 +420,10 @@ for i in range(0,count):
                 database_id=database_id,
                 collection_id=league_table_collection_id[i]
                 )
-                print('Initial Attributes added for '+ league_table_collection_id[i])
+                context.log('Initial Attributes added for '+ league_table_collection_id[i])
 
             if (len(classifications['attrID']) == len(attr_categories['attrID'])):
-                print('id category all good')
+                context.log('id category all good')
             else:
                 missingID=list(set(classifications['attrID']) - set(attr_categories['attrID']))
                 # Create rowID attributes
@@ -437,7 +437,7 @@ for i in range(0,count):
                     )
 
             if (len(classifications['float']) == len(attr_categories['float'])):
-                print('float category all good')
+                context.log('float category all good')
             else:
                 missingFloat=list(set(classifications['float']) - set(attr_categories['float']))
                 # Create float attributes
@@ -453,7 +453,7 @@ for i in range(0,count):
 
 
             if (len(classifications['attrSGD']) == len(attr_categories['attrSGD'])):
-                print('sgd category all good')
+                context.log('sgd category all good')
             else:
                 missingFloat=list(set(classifications['attrSGD']) - set(attr_categories['attrSGD']))
                 # Create float attributes
@@ -468,7 +468,7 @@ for i in range(0,count):
                     )
 
             if (len(classifications['array']) == len(attr_categories['array'])):
-                print('array category all good')
+                context.log('array category all good')
             else:
                 missingArray=list(set(classifications['array']) - set(attr_categories['array']))
                 # Create array attributes
@@ -483,7 +483,7 @@ for i in range(0,count):
                     )
 
             if (len(classifications['string']) == len(attr_categories['string'])):
-                print('string category all good')
+                context.log('string category all good')
             else:
                 missingString=list(set(classifications['string']) - set(attr_categories['string']))
         
@@ -499,7 +499,7 @@ for i in range(0,count):
                 )
 
         except:
-            print('Check attributes for '+ str(league_table_collection_id[i]))
+            context.log('Check attributes for '+ str(league_table_collection_id[i]))
 
         for leagueTable in leagueTableDataJSON:
 
@@ -513,7 +513,7 @@ for i in range(0,count):
                         data=leagueTable
                     )
 
-                    print(leagueTable['id']+' Updated')
+                    context.log(leagueTable['id']+' Updated')
 
                 else:
                     try:
@@ -524,17 +524,17 @@ for i in range(0,count):
                         data=leagueTable
                         )
 
-                        print('Documents created for '+leagueTable['id'])
+                        context.log('Documents created for '+leagueTable['id'])
                     except Exception as e:
              
-                        print(f"\nError creating document:")
-                        print(f"Error message: {str(e)}")
-                        # Print details of the problematic field
+                        context.log(f"\nError creating document:")
+                        context.log(f"Error message: {str(e)}")
+                        # context.log details of the problematic field
                         field_name = str(e).split("'")[1].split("'")[0] if "'" in str(e) else None
                         if field_name and field_name in leagueTable:
-                            print(f"\nProblem field details:")
-                            print(f"{field_name} type: {type(leagueTable[field_name])}")
-                            print(f"{field_name} length: {len(str(leagueTable[field_name]))}")
-                            print(f"Preview: {str(leagueTable[field_name])[:100]}...")
+                            context.log(f"\nProblem field details:")
+                            context.log(f"{field_name} type: {type(leagueTable[field_name])}")
+                            context.log(f"{field_name} length: {len(str(leagueTable[field_name]))}")
+                            context.log(f"Preview: {str(leagueTable[field_name])[:100]}...")
             except:
-                print('Check document '+ str(leagueTable['id']))
+                context.log('Check document '+ str(leagueTable['id']))
