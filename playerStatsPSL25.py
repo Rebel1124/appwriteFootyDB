@@ -1,6 +1,5 @@
 from appwrite.client import Client
 from appwrite.services.databases import Databases
-from dotenv import load_dotenv
 import requests
 import pandas as pd
 import numpy as np
@@ -12,35 +11,17 @@ import json
 import ast
 import os
 
-load_dotenv
+client = Client()
 
 currSeasonID=['13284']
-# currSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
-# currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
-# currSeasonNames = ['EPL_2020-2021', 'EPL_2021-2022', 'EPL-2022-2023', 'EPL-2023-2024', 'EPL_2024-2025',
-#                'PSL_2020-2021', 'PSL_2021-2022', 'PSL-2022-2023', 'PSL-2023-2024', 'PSL_2024-2025']
 
 count = len(currSeasonID)
 
-project_id = os.environ('APPWRITE_PROJECT_ID')
-api_key = os.environ('APPWRITE_API_KEY')
-database_id = os.environ('APPWRITE_DB_ID')
-footy_stats_key=os.environ('FOOTY_STATS_KEY')
-
-
-playerStats_collection_id = [os.environ('PLAYER_STATS_PSL24_25')]
-# playerStats_collection_id = [os.environ('PLAYER_STATS_EPL20_21'),
-#                                os.environ('PLAYER_STATS_EPL21_22'),
-#                                os.environ('PLAYER_STATS_EPL22_23'),
-#                                os.environ('PLAYER_STATS_EPL23_24'),
-#                                os.environ('PLAYER_STATS_EPL24_25'),
-#                                os.environ('PLAYER_STATS_PSL20_21'),
-#                                os.environ('PLAYER_STATS_PSL21_22'),
-#                                os.environ('PLAYER_STATS_PSL22_23'),
-#                                os.environ('PLAYER_STATS_PSL23_24'),
-#                                os.environ('PLAYER_STATS_PSL24_25')]
-
-client = Client()
+project_id = os.environ['APPWRITE_PROJECT_ID']
+api_key = os.environ['APPWRITE_API_KEY']
+database_id = os.environ['APPWRITE_DB_ID']
+footy_stats_key=os.environ['FOOTY_STATS_KEY']
+playerStats_collection_id = [os.environ['PLAYER_STATS_PSL24_25']]
 
 client = (client
     .set_endpoint('https://cloud.appwrite.io/v1') # Your API Endpoint
@@ -54,7 +35,7 @@ databases = Databases(client)
 def get_league_players(leagueID, pageNum):
     url = "https://api.football-data-api.com/league-players"
     paramsLeague = {
-        "key": "2d175fcc2f3c25f0a2a6f27e9ff2c662ca850cdc2fdac707296be94f83ddd837",
+        "key": footy_stats_key,
         "season_id": str(leagueID),
         "include":'stats',
         "page": str(pageNum)
