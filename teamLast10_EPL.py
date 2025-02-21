@@ -21,9 +21,9 @@ def main(context):
     
     project_id = os.environ['APPWRITE_PROJECT_ID']
     api_key = os.environ['APPWRITE_API_KEY']
-    database_id = os.environ['APPWRITE_DB_ID'[
+    database_id = os.environ['APPWRITE_DB_ID']
     footy_stats_key=os.environ['FOOTY_STATS_KEY']
-    LASTX_collection_id = os.environ('LAST10_EPL24_25')
+    LASTX_collection_id = os.environ['LAST10_EPL24_25']
     
     
     client = (client
