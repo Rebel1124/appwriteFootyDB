@@ -23,7 +23,7 @@ def main(context):
     api_key = os.environ['APPWRITE_API_KEY']
     database_id = os.environ['APPWRITE_DB_ID']
     footy_stats_key=os.environ['FOOTY_STATS_KEY']
-    LASTX_collection_id = os.environ['LAST5_PSL24_25']
+    lastx_collection_id = os.environ['LAST5_PSL24_25']
     
     
     client = (client
@@ -382,24 +382,24 @@ def main(context):
             lastXDataDF = convert_json_to_df(lastX_data['data'][0])
             lastXDataJSON=prepare_for_appwrite(lastXDataDF)
     
-            docIDs = get_all_document_ids(database_id, LASTX_collection_id)
+            docIDs = get_all_document_ids(database_id, lastx_collection_id)
             classifications=group_columns(lastX_data['data'][0])
     
             try:
                 attList = databases.list_attributes(
                 database_id = database_id,
-                collection_id= LASTX_collection_id
+                collection_id= lastx_collection_id
                 )
     
-                attr_categories = get_categorized_attributes(database_id, LASTX_collection_id)
+                attr_categories = get_categorized_attributes(database_id, lastx_collection_id)
     
                 if (attList['total'] == 0):
                     create_collection_attributes(
                     classifications=classifications,
                     database_id=database_id,
-                    collection_id=LASTX_collection_id
+                    collection_id=lastx_collection_id
                     )
-                    context.log('Initial Attributes added for '+ LASTX_collection_id)
+                    context.log('Initial Attributes added for '+ lastx_collection_id)
     
                 if (len(classifications['attrID']) == len(attr_categories['attrID'])):
                     context.log('id category all good')
@@ -409,7 +409,7 @@ def main(context):
                     for attrIds in missingID:
                         databases.create_string_attribute(  # Using string for IDs instead of float
                         database_id=database_id,
-                        collection_id=LASTX_collection_id,
+                        collection_id=lastx_collection_id,
                         key=attrIds,
                         required=True,  # IDs should be required
                         size=72000  # Adjust size based on your ID format
@@ -423,7 +423,7 @@ def main(context):
                     for attrFloats in missingFloat:
                         databases.create_float_attribute(
                         database_id=database_id,
-                        collection_id=LASTX_collection_id,
+                        collection_id=lastx_collection_id,
                         key=attrFloats,
                         required=False,  # Set to false to allow null values
                         min=-1,  # Adjust min value based on your needs,
@@ -438,7 +438,7 @@ def main(context):
                     for attrArray in missingArray:
                         databases.create_string_attribute(
                             database_id=database_id,
-                            collection_id=LASTX_collection_id,
+                            collection_id=lastx_collection_id,
                             key=attrArray,
                             required=False,  # Set to false to allow null values
                             # array=True,
@@ -454,7 +454,7 @@ def main(context):
                     for attrString in missingString:
                         databases.create_string_attribute(
                             database_id=database_id,
-                            collection_id=LASTX_collection_id,
+                            collection_id=lastx_collection_id,
                             key=attrString,
                             required=False,  # Set to false to allow null values
                             default="",  # Default empty string when null
@@ -471,7 +471,7 @@ def main(context):
     
                         docUpdate=databases.update_document(
                             database_id=database_id,
-                            collection_id=LASTX_collection_id,
+                            collection_id=lastx_collection_id,
                             document_id=lastXGames['id'],
                             data=lastXGames
                         )
@@ -482,7 +482,7 @@ def main(context):
                         try:
                             databases.create_document(
                             database_id=database_id,
-                            collection_id=LASTX_collection_id,
+                            collection_id=lastx_collection_id,
                             document_id=lastXGames['id'],
                             data=lastXGames
                             )
