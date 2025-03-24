@@ -542,6 +542,7 @@ def main(context):
                                 context.log(f"Preview: {str(leagueTable[field_name])[:100]}...")
                 except:
                     context.log('Check document '+ str(leagueTable['id']))
-    
+
+    print(context.log())
     
     return context.res.empty()
