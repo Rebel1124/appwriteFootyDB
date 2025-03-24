@@ -15,8 +15,7 @@ def main(context):
     
     client = Client()
     
-    # currSeasonID=['12325', '13284', '12451', '13303']
-    currSeasonID=['13303']
+    currSeasonID=['12325', '13284', '12451', '13303']
     # currSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
     # currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
     # currSeasonNames = ['EPL_2020-2021', 'EPL_2021-2022', 'EPL-2022-2023', 'EPL-2023-2024', 'EPL_2024-2025',
@@ -30,11 +29,10 @@ def main(context):
     footy_stats_key=os.environ['FOOTY_STATS_KEY']
     
     
-    # league_table_collection_id = [os.environ['LEAGUE_TABLE_EPL24_25'],
-    #                               os.environ['LEAGUE_TABLE_PSL24_25'],
-    #                               os.environ['LEAGUE_TABLE_ECH24_25'],
-    #                               os.environ['LEAGUE_TABLE_NFD24_25']]
-        league_table_collection_id = [os.environ['LEAGUE_TABLE_NFD24_25']]
+    league_table_collection_id = [os.environ['LEAGUE_TABLE_EPL24_25'],
+                                  os.environ['LEAGUE_TABLE_PSL24_25'],
+                                  os.environ['LEAGUE_TABLE_ECH24_25'],
+                                  os.environ['LEAGUE_TABLE_NFD24_25']]
     
     # league_table_collection_id = [os.environ['LEAGUE_TABLE_EPL20_21'],
     #                                os.environ['LEAGUE_TABLE_EPL21_22'],
@@ -267,49 +265,49 @@ def main(context):
             context.log(f"An error occurred: {str(e)}")
             return None
     
-    # def get_categorized_attributes(db_id, coll_id):
+    def get_categorized_attributes(db_id, coll_id):
     
-    #     categorized_attrs = {
-    #         'string': [],
-    #         'array': [],
-    #         'float': [],
-    #         'attrID': [],
-    #         'attrSGD': []
-    #     }
+        categorized_attrs = {
+            'string': [],
+            'array': [],
+            'float': [],
+            'attrID': [],
+            'attrSGD': []
+        }
         
-    #     try:
-    #         collection = databases.get_collection(
-    #             database_id=db_id,
-    #             collection_id=coll_id
-    #         )
+        try:
+            collection = databases.get_collection(
+                database_id=db_id,
+                collection_id=coll_id
+            )
             
-    #         # Categorize each attribute by type
-    #         for attr in collection['attributes']:
-    #             attr_type = attr['type']
-    #             attr_key = attr['key']
-    #             default = attr.get('default', None)  # Get default value if it exists
+            # Categorize each attribute by type
+            for attr in collection['attributes']:
+                attr_type = attr['type']
+                attr_key = attr['key']
+                default = attr.get('default', None)  # Get default value if it exists
                 
                 
-    #             if attr_key == 'id':
-    #                 categorized_attrs['attrID'].append(attr_key)
-    #             elif attr_key == 'seasonGoalDifference':
-    #                 categorized_attrs['attrSGD'].append(attr_key)
-    #             # Classify strings with null default as arrays
-    #             elif attr_type == 'string' and default is None:
-    #                 categorized_attrs['array'].append(attr_key)
-    #             # Classify doubles as floats
-    #             elif attr_type == 'double':
-    #                 categorized_attrs['float'].append(attr_key)
-    #             elif attr_type in categorized_attrs:
-    #                 categorized_attrs[attr_type].append(attr_key)
-    #             else:
-    #                 context.log(f"Warning: Unhandled attribute type '{attr_type}' for key '{attr_key}'")
+                if attr_key == 'id':
+                    categorized_attrs['attrID'].append(attr_key)
+                elif attr_key == 'seasonGoalDifference':
+                    categorized_attrs['attrSGD'].append(attr_key)
+                # Classify strings with null default as arrays
+                elif attr_type == 'string' and default is None:
+                    categorized_attrs['array'].append(attr_key)
+                # Classify doubles as floats
+                elif attr_type == 'double':
+                    categorized_attrs['float'].append(attr_key)
+                elif attr_type in categorized_attrs:
+                    categorized_attrs[attr_type].append(attr_key)
+                else:
+                    context.log(f"Warning: Unhandled attribute type '{attr_type}' for key '{attr_key}'")
         
-    #         return categorized_attrs
+            return categorized_attrs
     
-    #     except Exception as e:
-    #         context.log(f"An error occurred: {str(e)}")
-    #         return None
+        except Exception as e:
+            context.log(f"An error occurred: {str(e)}")
+            return None
     
     
     
@@ -407,103 +405,103 @@ def main(context):
             docIDs = get_all_document_ids(database_id, league_table_collection_id[i])
             classifications=group_columns(leagueTable_data['data']['all_matches_table_overall'])
     
-            # try:
-            #     attList = databases.list_attributes(
-            #     database_id = database_id,
-            #     collection_id= league_table_collection_id[i]
-            #     )
+            try:
+                attList = databases.list_attributes(
+                database_id = database_id,
+                collection_id= league_table_collection_id[i]
+                )
     
-            #     attr_categories = get_categorized_attributes(database_id, league_table_collection_id[i])
+                attr_categories = get_categorized_attributes(database_id, league_table_collection_id[i])
     
-            #     # context.log('Current collection has '+str(attList['total'])+' attributes')
+                # context.log('Current collection has '+str(attList['total'])+' attributes')
     
-            #     if (attList['total'] == 0):
-            #         # classifications=group_columns(leagueMatches_data['data'])
-            #         create_collection_attributes(
-            #         classifications=classifications,
-            #         database_id=database_id,
-            #         collection_id=league_table_collection_id[i]
-            #         )
-            #         context.log('Initial Attributes added for '+ league_table_collection_id[i])
+                if (attList['total'] == 0):
+                    # classifications=group_columns(leagueMatches_data['data'])
+                    create_collection_attributes(
+                    classifications=classifications,
+                    database_id=database_id,
+                    collection_id=league_table_collection_id[i]
+                    )
+                    context.log('Initial Attributes added for '+ league_table_collection_id[i])
     
-            #     if (len(classifications['attrID']) == len(attr_categories['attrID'])):
-            #         context.log('id category all good')
-            #     else:
-            #         missingID=list(set(classifications['attrID']) - set(attr_categories['attrID']))
-            #         # Create rowID attributes
-            #         for attrIds in missingID:
-            #             databases.create_string_attribute(  # Using string for IDs instead of float
-            #             database_id=database_id,
-            #             collection_id=league_table_collection_id[i],
-            #             key=attrIds,
-            #             required=True,  # IDs should be required
-            #             size=72000  # Adjust size based on your ID format
-            #             )
+                if (len(classifications['attrID']) == len(attr_categories['attrID'])):
+                    context.log('id category all good')
+                else:
+                    missingID=list(set(classifications['attrID']) - set(attr_categories['attrID']))
+                    # Create rowID attributes
+                    for attrIds in missingID:
+                        databases.create_string_attribute(  # Using string for IDs instead of float
+                        database_id=database_id,
+                        collection_id=league_table_collection_id[i],
+                        key=attrIds,
+                        required=True,  # IDs should be required
+                        size=72000  # Adjust size based on your ID format
+                        )
     
-            #     if (len(classifications['float']) == len(attr_categories['float'])):
-            #         context.log('float category all good')
-            #     else:
-            #         missingFloat=list(set(classifications['float']) - set(attr_categories['float']))
-            #         # Create float attributes
-            #         for attrFloats in missingFloat:
-            #             databases.create_float_attribute(
-            #             database_id=database_id,
-            #             collection_id=league_table_collection_id[i],
-            #             key=attrFloats,
-            #             required=False,  # Set to false to allow null values
-            #             min=-1,  # Adjust min value based on your needs,
-            #             default=-1  # Default value when null
-            #             )
+                if (len(classifications['float']) == len(attr_categories['float'])):
+                    context.log('float category all good')
+                else:
+                    missingFloat=list(set(classifications['float']) - set(attr_categories['float']))
+                    # Create float attributes
+                    for attrFloats in missingFloat:
+                        databases.create_float_attribute(
+                        database_id=database_id,
+                        collection_id=league_table_collection_id[i],
+                        key=attrFloats,
+                        required=False,  # Set to false to allow null values
+                        min=-1,  # Adjust min value based on your needs,
+                        default=-1  # Default value when null
+                        )
     
     
-            #     if (len(classifications['attrSGD']) == len(attr_categories['attrSGD'])):
-            #         context.log('sgd category all good')
-            #     else:
-            #         missingFloat=list(set(classifications['attrSGD']) - set(attr_categories['attrSGD']))
-            #         # Create float attributes
-            #         for attrFloats in missingFloat:
-            #             databases.create_float_attribute(
-            #             database_id=database_id,
-            #             collection_id=league_table_collection_id[i],
-            #             key=attrFloats,
-            #             required=False,  # Set to false to allow null values
-            #             min=-200,  # Adjust min value based on your needs,
-            #             default=-1  # Default value when null
-            #             )
+                if (len(classifications['attrSGD']) == len(attr_categories['attrSGD'])):
+                    context.log('sgd category all good')
+                else:
+                    missingFloat=list(set(classifications['attrSGD']) - set(attr_categories['attrSGD']))
+                    # Create float attributes
+                    for attrFloats in missingFloat:
+                        databases.create_float_attribute(
+                        database_id=database_id,
+                        collection_id=league_table_collection_id[i],
+                        key=attrFloats,
+                        required=False,  # Set to false to allow null values
+                        min=-200,  # Adjust min value based on your needs,
+                        default=-1  # Default value when null
+                        )
     
-            #     if (len(classifications['array']) == len(attr_categories['array'])):
-            #         context.log('array category all good')
-            #     else:
-            #         missingArray=list(set(classifications['array']) - set(attr_categories['array']))
-            #         # Create array attributes
-            #         for attrArray in missingArray:
-            #             databases.create_string_attribute(
-            #                 database_id=database_id,
-            #                 collection_id=league_table_collection_id[i],
-            #                 key=attrArray,
-            #                 required=False,  # Set to false to allow null values
-            #                 # array=True,
-            #                 size=72000 # Adjust size as needed
-            #             )
+                if (len(classifications['array']) == len(attr_categories['array'])):
+                    context.log('array category all good')
+                else:
+                    missingArray=list(set(classifications['array']) - set(attr_categories['array']))
+                    # Create array attributes
+                    for attrArray in missingArray:
+                        databases.create_string_attribute(
+                            database_id=database_id,
+                            collection_id=league_table_collection_id[i],
+                            key=attrArray,
+                            required=False,  # Set to false to allow null values
+                            # array=True,
+                            size=72000 # Adjust size as needed
+                        )
     
-            #     if (len(classifications['string']) == len(attr_categories['string'])):
-            #         context.log('string category all good')
-            #     else:
-            #         missingString=list(set(classifications['string']) - set(attr_categories['string']))
+                if (len(classifications['string']) == len(attr_categories['string'])):
+                    context.log('string category all good')
+                else:
+                    missingString=list(set(classifications['string']) - set(attr_categories['string']))
             
-            #         # Create string attributes
-            #         for attrString in missingString:
-            #             databases.create_string_attribute(
-            #                 database_id=database_id,
-            #                 collection_id=league_table_collection_id[i],
-            #                 key=attrString,
-            #                 required=False,  # Set to false to allow null values
-            #                 default="",  # Default empty string when null
-            #                 size=72000  # Adjust size as needed
-            #         )
+                    # Create string attributes
+                    for attrString in missingString:
+                        databases.create_string_attribute(
+                            database_id=database_id,
+                            collection_id=league_table_collection_id[i],
+                            key=attrString,
+                            required=False,  # Set to false to allow null values
+                            default="",  # Default empty string when null
+                            size=72000  # Adjust size as needed
+                    )
     
-            # except:
-            #     context.log('Check attributes for '+ str(league_table_collection_id[i]))
+            except:
+                context.log('Check attributes for '+ str(league_table_collection_id[i]))
     
             for leagueTable in leagueTableDataJSON:
     
@@ -543,6 +541,4 @@ def main(context):
                 except:
                     context.log('Check document '+ str(leagueTable['id']))
 
-    print(context.log())
-    
     return context.res.empty()
