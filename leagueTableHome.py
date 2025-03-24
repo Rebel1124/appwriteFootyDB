@@ -15,7 +15,7 @@ def main(context):
     
     client = Client()
     
-    currSeasonID=['12325', '13284']
+    currSeasonID=['12325', '13284', '12451', '13303']
     # currSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
     # currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
     # currSeasonNames = ['EPL_2020-2021', 'EPL_2021-2022', 'EPL-2022-2023', 'EPL-2023-2024', 'EPL_2024-2025',
@@ -29,7 +29,11 @@ def main(context):
     footy_stats_key=os.environ['FOOTY_STATS_KEY']
     
     
-    LEAGUE_TABLE_HOME_collection_id = [os.environ['LEAGUE_TABLE_HOME_EPL24_25'], os.environ['LEAGUE_TABLE_HOME_PSL24_25']]
+    LEAGUE_TABLE_HOME_collection_id = [os.environ['LEAGUE_TABLE_HOME_EPL24_25'],
+                                       os.environ['LEAGUE_TABLE_HOME_PSL24_25'],
+                                      os.environ['LEAGUE_TABLE_HOME_ECH24_25'],
+                                       os.environ['LEAGUE_TABLE_HOME_NFD24_25']]
+    
     # LEAGUE_TABLE_HOME_collection_id = [os.environ['LEAGUE_TABLE_HOME_EPL20_21'],
     #                                os.environ['LEAGUE_TABLE_HOME_EPL21_22'],
     #                                os.environ['LEAGUE_TABLE_HOME_EPL22_23'],
