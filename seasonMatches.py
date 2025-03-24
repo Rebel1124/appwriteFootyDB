@@ -19,7 +19,10 @@ def main(context):
     api_key = os.environ['APPWRITE_API_KEY']
     database_id = os.environ['APPWRITE_DB_ID']
     footy_stats_key=os.environ['FOOTY_STATS_KEY']
-    seasonMatches_collection_id = [os.environ['SEASON_MATCHES_EPL24_25'], os.environ['SEASON_MATCHES_PSL24_25']]
+    seasonMatches_collection_id = [os.environ['SEASON_MATCHES_EPL24_25'],
+                                   os.environ['SEASON_MATCHES_PSL24_25'],
+                                  os.environ['SEASON_MATCHES_ECH24_25'],
+                                   os.environ['SEASON_MATCHES_NFD24_25']]
     
 
     # seasonMatches_collection_id = [os.environ['SEASON_MATCHES_EPL20_21'],
@@ -41,7 +44,7 @@ def main(context):
     
     databases = Databases(client)
     
-    currSeasonID=['12325', '13284']
+    currSeasonID=['12325', '13284', '12451', '13303']
     # currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
     # allSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
     # allSeasonNames = ['EPL_2020-2021', 'EPL_2021-2022', 'EPL-2022-2023', 'EPL-2023-2024', 'EPL_2024-2025',
