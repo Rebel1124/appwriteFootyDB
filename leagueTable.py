@@ -33,6 +33,7 @@ def main(context):
                                   os.environ['LEAGUE_TABLE_PSL24_25'],
                                   os.environ['LEAGUE_TABLE_ECH24_25'],
                                   os.environ['LEAGUE_TABLE_NFD24_25']]
+    
     # league_table_collection_id = [os.environ['LEAGUE_TABLE_EPL20_21'],
     #                                os.environ['LEAGUE_TABLE_EPL21_22'],
     #                                os.environ['LEAGUE_TABLE_EPL22_23'],
