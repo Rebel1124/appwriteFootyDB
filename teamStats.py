@@ -16,7 +16,7 @@ def main(context):
 
     client = Client()
     
-    currSeasonID=['12325', '13284']
+    currSeasonID=['12325', '13284', '12451', '13303']
     # allSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
     # currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
     # allSeasonNames = ['EPL_2020-2021', 'EPL_2021-2022', 'EPL-2022-2023', 'EPL-2023-2024', 'EPL_2024-2025',
@@ -29,7 +29,10 @@ def main(context):
     database_id = os.environ['APPWRITE_DB_ID']
     footy_stats_key=os.environ['FOOTY_STATS_KEY']
     
-    teamStats_collection_id = [os.environ['TEAM_STATS_EPL24_25'], os.environ['TEAM_STATS_PSL24_25']]
+    teamStats_collection_id = [os.environ['TEAM_STATS_EPL24_25'],
+                               os.environ['TEAM_STATS_PSL24_25'],
+                              os.environ['TEAM_STATS_ECH24_25'],
+                               os.environ['TEAM_STATS_NFD24_25']]
     # teamStats_collection_id = [os.environ['TEAM_STATS_EPL20_21'],
     #                                os.environ['TEAM_STATS_EPL21_22'],
     #                                os.environ['TEAM_STATS_EPL22_23'],
@@ -110,6 +113,17 @@ def main(context):
     
             # remove non float values in the founded column
             if col.lower() == 'founded':
+
+                # First handle decade strings like "1980s"
+                df[col] = df[col].astype(str).apply(lambda x: x.strip())
+                
+                # Extract decade values (e.g., "1980s" -> 1980)
+                decade_mask = df[col].str.contains(r'\d+s$', regex=True)
+                if decade_mask.any():
+                    # For decade entries, extract the numbers and use the beginning of the decade
+                    df.loc[decade_mask, col] = df.loc[decade_mask, col].str.extract(r'(\d+)s',expand=False)
+
+                
                 # Convert 'founded' column to numeric, setting non-numeric values to NaN
                 df[col] = pd.to_numeric(df[col], errors='coerce')
                 # Remove rows where 'founded' is NaN (these were the non-float values)
