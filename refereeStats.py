@@ -15,7 +15,7 @@ def main(context):
 
     client = Client()
     
-    currSeasonID=['12325', '13284']
+    currSeasonID=['12325', '13284', '12451', '13303']
     # currSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
     # currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
     # currSeasonNames = ['EPL_2020-2021', 'EPL_2021-2022', 'EPL-2022-2023', 'EPL-2023-2024', 'EPL_2024-2025',
@@ -28,7 +28,10 @@ def main(context):
     database_id = os.environ['APPWRITE_DB_ID']
     footy_stats_key=os.environ['FOOTY_STATS_KEY']
     
-    refereeStats_collection_id = [os.environ['REFEREE_STATS_EPL24_25'], os.environ['REFEREE_STATS_PSL24_25']]
+    refereeStats_collection_id = [os.environ['REFEREE_STATS_EPL24_25'],
+                                  os.environ['REFEREE_STATS_PSL24_25'],
+                                 os.environ['REFEREE_STATS_ECH24_25'],
+                                  os.environ['REFEREE_STATS_NFD24_25']]
     # refereeStats_collection_id = [os.environ['REFEREE_STATS_EPL20_21'],
     #                                os.environ['REFEREE_STATS_EPL21_22'],
     #                                os.environ['REFEREE_STATS_EPL22_23'],
@@ -114,6 +117,21 @@ def main(context):
     
             # remove convert red_cards_overall field to float
             if col.lower() == 'red_cards_overall':
+                df[col] = df[col].mask(df[col] < -1, 0)
+                continue
+    
+            # remove convert yellow_cards_overall field to float
+            if col.lower() == 'yellow_cards_overall':
+                df[col] = df[col].mask(df[col] < -1, 0)
+                continue
+    
+            # remove convert cards_overall field to float
+            if col.lower() == 'cards_overall':
+                df[col] = df[col].mask(df[col] < -1, 0)
+                continue
+    
+            # remove convert cards_per_match_overall field to float
+            if col.lower() == 'cards_per_match_overall':
                 df[col] = df[col].mask(df[col] < -1, 0)
                 continue
     
