@@ -15,6 +15,15 @@ def main(context):
     
     client = Client()
 
+    currSeasonID=['12325', '13284', '12451', '13303']
+    # currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
+    # allSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
+    # allSeasonNames = ['EPL_2020-2021', 'EPL_2021-2022', 'EPL-2022-2023', 'EPL-2023-2024', 'EPL_2024-2025',
+    #                'PSL_2020-2021', 'PSL_2021-2022', 'PSL-2022-2023', 'PSL-2023-2024', 'PSL_2024-2025']
+    
+    count = len(currSeasonID)
+    
+
     project_id = os.environ['APPWRITE_PROJECT_ID']
     api_key = os.environ['APPWRITE_API_KEY']
     database_id = os.environ['APPWRITE_DB_ID']
@@ -43,14 +52,6 @@ def main(context):
     )
     
     databases = Databases(client)
-    
-    currSeasonID=['12325', '13284', '12451', '13303']
-    # currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
-    # allSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
-    # allSeasonNames = ['EPL_2020-2021', 'EPL_2021-2022', 'EPL-2022-2023', 'EPL-2023-2024', 'EPL_2024-2025',
-    #                'PSL_2020-2021', 'PSL_2021-2022', 'PSL-2022-2023', 'PSL-2023-2024', 'PSL_2024-2025']
-    
-    count = len(currSeasonID)
     
     #Get League Matches
     def get_league_matches(leagueID, games=500):
