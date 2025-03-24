@@ -395,11 +395,11 @@ def main(context):
     
         if leagueTable_data and 'data' in leagueTable_data:
     
-            leagueTableDataDF = convert_json_to_df(leagueTable_data['data']['league_table'])
+            leagueTableDataDF = convert_json_to_df(leagueTable_data['data']['all_matches_table_overall'])
             leagueTableDataJSON=prepare_for_appwrite(leagueTableDataDF)
     
             docIDs = get_all_document_ids(database_id, league_table_collection_id[i])
-            classifications=group_columns(leagueTable_data['data']['league_table'])
+            classifications=group_columns(leagueTable_data['data']['all_matches_table_overall'])
     
             try:
                 attList = databases.list_attributes(
