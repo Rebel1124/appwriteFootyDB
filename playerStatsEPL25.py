@@ -368,7 +368,7 @@ def main(context):
     for i in range(0,count):
     
         # Retrieve league players
-        for j in range(1,6):
+        for j in range(1,11):
             try:
                 leaguePlayers_data = get_league_players(leagueID=currSeasonID[i], pageNum=j)
     
