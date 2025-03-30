@@ -490,7 +490,8 @@ def main(context):
 
                     print(lastXGames['id']+' Updated')
 
-                # else:
+                except:
+                    
                     try:
                         databases.create_document(
                         database_id=database_id,
@@ -511,7 +512,7 @@ def main(context):
                             print(f"{field_name} type: {type(lastXGames[field_name])}")
                             print(f"{field_name} length: {len(str(lastXGames[field_name]))}")
                             print(f"Preview: {str(lastXGames[field_name])[:100]}...")
-                except:
-                    print('Check document '+ str(lastXGames['id']))
+                # except:
+                #     print('Check document '+ str(lastXGames['id']))
                     
     return context.res.empty()    
