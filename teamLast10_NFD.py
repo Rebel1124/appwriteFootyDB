@@ -318,68 +318,68 @@ def main(context):
     
     
     
-    def create_collection_attributes(classifications, database_id: str, collection_id: str):
-        # ID attribute
-        id_attribute = classifications['attrID']
-        # Float attributes
-        float_attributes = classifications['float']
-        # String attributes
-        string_attributes = classifications['string']
-        # Array attributes
-        array_attributes = classifications['array']
+    # def create_collection_attributes(classifications, database_id: str, collection_id: str):
+    #     # ID attribute
+    #     id_attribute = classifications['attrID']
+    #     # Float attributes
+    #     float_attributes = classifications['float']
+    #     # String attributes
+    #     string_attributes = classifications['string']
+    #     # Array attributes
+    #     array_attributes = classifications['array']
     
     
-        try:
+    #     try:
     
-            # Create rowID attributes
-            for attr in id_attribute:
-                databases.create_string_attribute(  # Using string for IDs instead of float
-                database_id=database_id,
-                collection_id=collection_id,
-                key=attr,
-                required=True,  # IDs should be required
-                size=72000  # Adjust size based on your ID format
-                )
+    #         # Create rowID attributes
+    #         for attr in id_attribute:
+    #             databases.create_string_attribute(  # Using string for IDs instead of float
+    #             database_id=database_id,
+    #             collection_id=collection_id,
+    #             key=attr,
+    #             required=True,  # IDs should be required
+    #             size=72000  # Adjust size based on your ID format
+    #             )
             
     
-            # Create float attributes
-            for attr in float_attributes:
-                databases.create_float_attribute(
-                database_id=database_id,
-                collection_id=collection_id,
-                key=attr,
-                required=False,  # Set to false to allow null values
-                min=-1,  # Adjust min value based on your needs
-                default=-1  # Default value when null
-                )
+    #         # Create float attributes
+    #         for attr in float_attributes:
+    #             databases.create_float_attribute(
+    #             database_id=database_id,
+    #             collection_id=collection_id,
+    #             key=attr,
+    #             required=False,  # Set to false to allow null values
+    #             min=-1,  # Adjust min value based on your needs
+    #             default=-1  # Default value when null
+    #             )
     
     
-            # Create string attributes
-            for attr in string_attributes:
-                databases.create_string_attribute(
-                    database_id=database_id,
-                    collection_id=collection_id,
-                    key=attr,
-                    required=False,  # Set to false to allow null values
-                    default="",  # Default empty string when null
-                    size=72000  # Adjust size as needed
-                )
+    #         # Create string attributes
+    #         for attr in string_attributes:
+    #             databases.create_string_attribute(
+    #                 database_id=database_id,
+    #                 collection_id=collection_id,
+    #                 key=attr,
+    #                 required=False,  # Set to false to allow null values
+    #                 default="",  # Default empty string when null
+    #                 size=72000  # Adjust size as needed
+    #             )
     
             
-            # Create array attributes
-            for attr in array_attributes:
-                databases.create_string_attribute(
-                    database_id=database_id,
-                    collection_id=collection_id,
-                    key=attr,
-                    required=False,  # Set to false to allow null values
-                    # array=True,
-                    size=72000 # Adjust size as needed
-                )
+    #         # Create array attributes
+    #         for attr in array_attributes:
+    #             databases.create_string_attribute(
+    #                 database_id=database_id,
+    #                 collection_id=collection_id,
+    #                 key=attr,
+    #                 required=False,  # Set to false to allow null values
+    #                 # array=True,
+    #                 size=72000 # Adjust size as needed
+    #             )
     
     
-        except Exception as e:
-            print(f"Error creating attributes: {str(e)}")
+    #     except Exception as e:
+    #         print(f"Error creating attributes: {str(e)}")
     
     
     
