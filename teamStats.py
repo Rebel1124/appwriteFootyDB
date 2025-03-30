@@ -10,6 +10,7 @@ from appwrite.query import Query
 import json
 import ast
 import os
+import re
 
 
 def main(context):
