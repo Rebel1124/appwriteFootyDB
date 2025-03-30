@@ -24,7 +24,7 @@ def main(context):
     api_key = os.environ['APPWRITE_API_KEY']
     database_id = os.environ['APPWRITE_DB_ID']
     footy_stats_key=os.environ['FOOTY_STATS_KEY']
-    playerStats_collection_id = [os.environ('PLAYER_STATS_NFD24_25')]
+    playerStats_collection_id = [os.environ['PLAYER_STATS_NFD24_25']]
 
     
     client = (client
