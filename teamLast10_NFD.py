@@ -199,111 +199,111 @@ def main(context):
     
     
     
-    def get_categorized_attributes(db_id, coll_id):
+    # def get_categorized_attributes(db_id, coll_id):
     
-        categorized_attrs = {
-            'string': [],
-            'array': [],
-            'float': [],
-            'attrID': []
-        }
+    #     categorized_attrs = {
+    #         'string': [],
+    #         'array': [],
+    #         'float': [],
+    #         'attrID': []
+    #     }
         
-        try:
-            collection = databases.get_collection(
-                database_id=db_id,
-                collection_id=coll_id
-            )
+    #     try:
+    #         collection = databases.get_collection(
+    #             database_id=db_id,
+    #             collection_id=coll_id
+    #         )
             
-            # Categorize each attribute by type
-            for attr in collection['attributes']:
-                attr_type = attr['type']
-                attr_key = attr['key']
-                default = attr.get('default', None)  # Get default value if it exists
+    #         # Categorize each attribute by type
+    #         for attr in collection['attributes']:
+    #             attr_type = attr['type']
+    #             attr_key = attr['key']
+    #             default = attr.get('default', None)  # Get default value if it exists
                 
                 
-                if attr_key == 'id':
-                    categorized_attrs['attrID'].append(attr_key)
-                # Classify strings with null default as arrays
-                elif attr_type == 'string' and default is None:
-                    categorized_attrs['array'].append(attr_key)
-                # Classify doubles as floats
-                elif attr_type == 'double':
-                    categorized_attrs['float'].append(attr_key)
-                elif attr_type in categorized_attrs:
-                    categorized_attrs[attr_type].append(attr_key)
-                else:
-                    print(f"Warning: Unhandled attribute type '{attr_type}' for key '{attr_key}'")
+    #             if attr_key == 'id':
+    #                 categorized_attrs['attrID'].append(attr_key)
+    #             # Classify strings with null default as arrays
+    #             elif attr_type == 'string' and default is None:
+    #                 categorized_attrs['array'].append(attr_key)
+    #             # Classify doubles as floats
+    #             elif attr_type == 'double':
+    #                 categorized_attrs['float'].append(attr_key)
+    #             elif attr_type in categorized_attrs:
+    #                 categorized_attrs[attr_type].append(attr_key)
+    #             else:
+    #                 print(f"Warning: Unhandled attribute type '{attr_type}' for key '{attr_key}'")
         
-            return categorized_attrs
+    #         return categorized_attrs
     
-        except Exception as e:
-            print(f"An error occurred: {str(e)}")
-            return None
-    
-    
-    
-    def create_collection_attributes(classifications, database_id: str, collection_id: str):
-        # ID attribute
-        id_attribute = classifications['attrID']
-        # Float attributes
-        float_attributes = classifications['float']
-        # String attributes
-        string_attributes = classifications['string']
-        # Array attributes
-        array_attributes = classifications['array']
+    #     except Exception as e:
+    #         print(f"An error occurred: {str(e)}")
+    #         return None
     
     
-        try:
     
-            # Create rowID attributes
-            for attr in id_attribute:
-                databases.create_string_attribute(  # Using string for IDs instead of float
-                database_id=database_id,
-                collection_id=collection_id,
-                key=attr,
-                required=True,  # IDs should be required
-                size=72000  # Adjust size based on your ID format
-                )
+    # def create_collection_attributes(classifications, database_id: str, collection_id: str):
+    #     # ID attribute
+    #     id_attribute = classifications['attrID']
+    #     # Float attributes
+    #     float_attributes = classifications['float']
+    #     # String attributes
+    #     string_attributes = classifications['string']
+    #     # Array attributes
+    #     array_attributes = classifications['array']
+    
+    
+    #     try:
+    
+    #         # Create rowID attributes
+    #         for attr in id_attribute:
+    #             databases.create_string_attribute(  # Using string for IDs instead of float
+    #             database_id=database_id,
+    #             collection_id=collection_id,
+    #             key=attr,
+    #             required=True,  # IDs should be required
+    #             size=72000  # Adjust size based on your ID format
+    #             )
             
     
-            # Create float attributes
-            for attr in float_attributes:
-                databases.create_float_attribute(
-                database_id=database_id,
-                collection_id=collection_id,
-                key=attr,
-                required=False,  # Set to false to allow null values
-                min=-1,  # Adjust min value based on your needs
-                default=-1  # Default value when null
-                )
+    #         # Create float attributes
+    #         for attr in float_attributes:
+    #             databases.create_float_attribute(
+    #             database_id=database_id,
+    #             collection_id=collection_id,
+    #             key=attr,
+    #             required=False,  # Set to false to allow null values
+    #             min=-1,  # Adjust min value based on your needs
+    #             default=-1  # Default value when null
+    #             )
     
     
-            # Create string attributes
-            for attr in string_attributes:
-                databases.create_string_attribute(
-                    database_id=database_id,
-                    collection_id=collection_id,
-                    key=attr,
-                    required=False,  # Set to false to allow null values
-                    default="",  # Default empty string when null
-                    size=72000  # Adjust size as needed
-                )
+    #         # Create string attributes
+    #         for attr in string_attributes:
+    #             databases.create_string_attribute(
+    #                 database_id=database_id,
+    #                 collection_id=collection_id,
+    #                 key=attr,
+    #                 required=False,  # Set to false to allow null values
+    #                 default="",  # Default empty string when null
+    #                 size=72000  # Adjust size as needed
+    #             )
     
             
-            # Create array attributes
-            for attr in array_attributes:
-                databases.create_string_attribute(
-                    database_id=database_id,
-                    collection_id=collection_id,
-                    key=attr,
-                    required=False,  # Set to false to allow null values
-                    # array=True,
-                    size=72000 # Adjust size as needed
-                )
+    #         # Create array attributes
+    #         for attr in array_attributes:
+    #             databases.create_string_attribute(
+    #                 database_id=database_id,
+    #                 collection_id=collection_id,
+    #                 key=attr,
+    #                 required=False,  # Set to false to allow null values
+    #                 # array=True,
+    #                 size=72000 # Adjust size as needed
+    #             )
     
     
-        except Exception as e:
-            print(f"Error creating attributes: {str(e)}")
+    #     except Exception as e:
+    #         print(f"Error creating attributes: {str(e)}")
     
     
     
@@ -321,44 +321,43 @@ def main(context):
             # docIDs = get_all_document_ids(database_id, lastx_collection_id)
             # classifications=group_columns(lastX_data['data'][2])
     
-            try:
-                attList = databases.list_attributes(
-                database_id = database_id,
-                collection_id= lastx_collection_id
-                )
+            # try:
+            #     attList = databases.list_attributes(
+            #     database_id = database_id,
+            #     collection_id= lastx_collection_id
+            #     )
     
-                attr_categories = get_categorized_attributes(database_id, lastx_collection_id)
+            #     attr_categories = get_categorized_attributes(database_id, lastx_collection_id)
     
-                if (attList['total'] == 0):
-                    create_collection_attributes(
-                    classifications=classifications,
-                    database_id=database_id,
-                    collection_id=lastx_collection_id
-                    )
-                    print('Initial Attributes added for '+ lastx_collection_id)
+            #     if (attList['total'] == 0):
+            #         create_collection_attributes(
+            #         classifications=classifications,
+            #         database_id=database_id,
+            #         collection_id=lastx_collection_id
+            #         )
+            #         print('Initial Attributes added for '+ lastx_collection_id)
     
-                if (len(classifications['attrID']) == len(attr_categories['attrID'])):
-                    print('id category all good')
-                else:
-                    missingID=list(set(classifications['attrID']) - set(attr_categories['attrID']))
-                    # Create rowID attributes
-                    for attrIds in missingID:
-                        databases.create_string_attribute(  # Using string for IDs instead of float
-                        database_id=database_id,
-                        collection_id=lastx_collection_id,
-                        key=attrIds,
-                        required=True,  # IDs should be required
-                        size=72000  # Adjust size based on your ID format
-                        )
+            #     if (len(classifications['attrID']) == len(attr_categories['attrID'])):
+            #         print('id category all good')
+            #     else:
+            #         missingID=list(set(classifications['attrID']) - set(attr_categories['attrID']))
+            #         # Create rowID attributes
+            #         for attrIds in missingID:
+            #             databases.create_string_attribute(  # Using string for IDs instead of float
+            #             database_id=database_id,
+            #             collection_id=lastx_collection_id,
+            #             key=attrIds,
+            #             required=True,  # IDs should be required
+            #             size=72000  # Adjust size based on your ID format
+            #             )
 
     
-            except:
-                print('Check attributes for '+ str(lastx_collection_id))
+            # except:
+            #     print('Check attributes for '+ str(lastx_collection_id))
     
             for lastXGames in lastXDataJSON:
     
                 try:
-                # if(lastXGames['id'] in docIDs):
 
                     docUpdate=databases.update_document(
                         database_id=database_id,
@@ -369,7 +368,8 @@ def main(context):
 
                     print(lastXGames['id']+' Updated')
 
-                # else:
+                except:
+
                     try:
                         databases.create_document(
                         database_id=database_id,
@@ -377,7 +377,7 @@ def main(context):
                         document_id=lastXGames['id'],
                         data=lastXGames
                         )
-
+    
                         print('Documents created for '+lastXGames['id'])
                     except Exception as e:
              
@@ -390,7 +390,5 @@ def main(context):
                             print(f"{field_name} type: {type(lastXGames[field_name])}")
                             print(f"{field_name} length: {len(str(lastXGames[field_name]))}")
                             print(f"Preview: {str(lastXGames[field_name])[:100]}...")
-                except:
-                    print('Check document '+ str(lastXGames['id']))
 
     return context.res.empty()
