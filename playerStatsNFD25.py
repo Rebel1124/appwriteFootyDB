@@ -1,6 +1,5 @@
 from appwrite.client import Client
 from appwrite.services.databases import Databases
-from dotenv import load_dotenv
 import requests
 import pandas as pd
 import numpy as np
@@ -11,8 +10,6 @@ from appwrite.query import Query
 import json
 import ast
 import os
-
-load_dotenv
 
 # currSeasonID=['12451', '13303']
 currSeasonID=['13303']
