@@ -26,7 +26,6 @@ def main(context):
     footy_stats_key=os.environ['FOOTY_STATS_KEY']
     lastx_collection_id = os.environ['LAST6_NFD24_25']
     
-    
     client = (client
         .set_endpoint('https://cloud.appwrite.io/v1') # Your API Endpoint
         .set_project(project_id)  # Your project ID
