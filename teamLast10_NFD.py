@@ -350,52 +350,7 @@ def main(context):
                         required=True,  # IDs should be required
                         size=72000  # Adjust size based on your ID format
                         )
-    
-                # if (len(classifications['float']) == len(attr_categories['float'])):
-                #     print('float category all good')
-                # else:
-                #     missingFloat=list(set(classifications['float']) - set(attr_categories['float']))
-                #     # Create float attributes
-                #     for attrFloats in missingFloat:
-                #         databases.create_float_attribute(
-                #         database_id=database_id,
-                #         collection_id=lastx_collection_id,
-                #         key=attrFloats,
-                #         required=False,  # Set to false to allow null values
-                #         min=-1,  # Adjust min value based on your needs,
-                #         default=-1  # Default value when null
-                #         )
-    
-                # if (len(classifications['array']) == len(attr_categories['array'])):
-                #     print('array category all good')
-                # else:
-                #     missingArray=list(set(classifications['array']) - set(attr_categories['array']))
-                #     # Create array attributes
-                #     for attrArray in missingArray:
-                #         databases.create_string_attribute(
-                #             database_id=database_id,
-                #             collection_id=lastx_collection_id,
-                #             key=attrArray,
-                #             required=False,  # Set to false to allow null values
-                #             # array=True,
-                #             size=72000 # Adjust size as needed
-                #         )
-    
-                # if (len(classifications['string']) == len(attr_categories['string'])):
-                #     print('string category all good')
-                # else:
-                #     missingString=list(set(classifications['string']) - set(attr_categories['string']))
-            
-                #     # Create string attributes
-                #     for attrString in missingString:
-                #         databases.create_string_attribute(
-                #             database_id=database_id,
-                #             collection_id=lastx_collection_id,
-                #             key=attrString,
-                #             required=False,  # Set to false to allow null values
-                #             default="",  # Default empty string when null
-                #             size=72000  # Adjust size as needed
-                #     )
+
     
             except:
                 print('Check attributes for '+ str(lastx_collection_id))
