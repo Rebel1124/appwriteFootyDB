@@ -69,6 +69,26 @@ def main(context):
             context.log(f"Error retrieving data: {e}")
             return None
         
+
+    def process_year(year_str):
+        if not isinstance(year_str, str):
+            return float('nan')
+        
+        try:
+            # Check for decade format (e.g., "1980s")
+            decade_match = re.search(r'(\d{4})s', year_str)
+            if decade_match:
+                # Extract the decade (e.g., 1980) and return it
+                # You could alternatively return the middle of the decade (1985) if preferred
+                return float(decade_match.group(1))
+            
+            # If there are multiple years, take the first one
+            year = year_str.split('/')[0].strip()
+            # Convert to float
+            return float(year)
+        except:
+            # Return NaN for any value that can't be converted
+            return float('nan')
     
     
     def convert_json_to_df(json_data: Union[Dict, List]) -> pd.DataFrame:
@@ -110,20 +130,11 @@ def main(context):
                 # Ensure ID columns are strings
                 df[col] = df[col].astype(str)
                 continue
-    
+
             # remove non float values in the founded column
             if col.lower() == 'founded':
-
-                # First handle decade strings like "1980s"
-                df[col] = df[col].astype(str).apply(lambda x: x.strip())
-                
-                # Extract decade values (e.g., "1980s" -> 1980)
-                decade_mask = df[col].str.contains(r'\d+s$', regex=True)
-                if decade_mask.any():
-                    # For decade entries, extract the numbers and use the beginning of the decade
-                    df.loc[decade_mask, col] = df.loc[decade_mask, col].str.extract(r'(\d+)s',expand=False)
-
-                
+                # Apply the conversion to the founded column
+                df[col] = df[col].apply(process_year)
                 # Convert 'founded' column to numeric, setting non-numeric values to NaN
                 df[col] = pd.to_numeric(df[col], errors='coerce')
                 # Remove rows where 'founded' is NaN (these were the non-float values)
@@ -131,6 +142,27 @@ def main(context):
                 # Keep values as float
                 df[col] = df[col].astype(float)
                 continue
+    
+            # remove non float values in the founded column
+            # if col.lower() == 'founded':
+
+            #     # First handle decade strings like "1980s"
+            #     df[col] = df[col].astype(str).apply(lambda x: x.strip())
+                
+            #     # Extract decade values (e.g., "1980s" -> 1980)
+            #     decade_mask = df[col].str.contains(r'\d+s$', regex=True)
+            #     if decade_mask.any():
+            #         # For decade entries, extract the numbers and use the beginning of the decade
+            #         df.loc[decade_mask, col] = df.loc[decade_mask, col].str.extract(r'(\d+)s',expand=False)
+
+                
+            #     # Convert 'founded' column to numeric, setting non-numeric values to NaN
+            #     df[col] = pd.to_numeric(df[col], errors='coerce')
+            #     # Remove rows where 'founded' is NaN (these were the non-float values)
+            #     df = df.dropna(subset=[col])
+            #     # Keep values as float
+            #     df[col] = df[col].astype(float)
+            #     continue
                 
             if df[col].dtype == 'object':  # Only process non-numeric columns
                 # Check if column contains string numbers
