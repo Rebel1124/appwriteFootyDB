@@ -368,7 +368,7 @@ def main(context):
     for i in range(0,count):
     
         # Retrieve league players
-        for j in range(1,2):
+        for j in range(1,6):
             try:
                 leaguePlayers_data = get_league_players(leagueID=currSeasonID[i], pageNum=j)
     
@@ -380,7 +380,7 @@ def main(context):
                     seasonPlayerDataDF = convert_json_to_df(leaguePlayers_data['data'])
                     seasonPlayerDataJSON=prepare_for_appwrite(seasonPlayerDataDF)
     
-                    docIDs = get_all_document_ids(database_id, playerStats_collection_id[i])
+                    # docIDs = get_all_document_ids(database_id, playerStats_collection_id[i])
                     classifications=group_columns(leaguePlayers_data['data'])
     
                     # try:
@@ -468,40 +468,63 @@ def main(context):
                     for seasonPlayer in seasonPlayerDataJSON:
     
                         try:
-                            if(seasonPlayer['id'] in docIDs):
+                            # if(seasonPlayer['id'] in docIDs):
     
-                                docUpdate=databases.update_document(
-                                    database_id=database_id,
-                                    collection_id=playerStats_collection_id[i],
-                                    document_id=seasonPlayer['id'],
-                                    data=seasonPlayer
-                                )
+                            docUpdate=databases.update_document(
+                                database_id=database_id,
+                                collection_id=playerStats_collection_id[i],
+                                document_id=seasonPlayer['id'],
+                                data=seasonPlayer
+                            )
+
+                            context.log(seasonPlayer['id']+' Updated')
     
-                                context.log(seasonPlayer['id']+' Updated')
+                            # else:
+                                # try:
+                                #     databases.create_document(
+                                #     database_id=database_id,
+                                #     collection_id=playerStats_collection_id[i],
+                                #     document_id=seasonPlayer['id'],
+                                #     data=seasonPlayer
+                                #     )
     
-                            else:
-                                try:
-                                    databases.create_document(
-                                    database_id=database_id,
-                                    collection_id=playerStats_collection_id[i],
-                                    document_id=seasonPlayer['id'],
-                                    data=seasonPlayer
-                                    )
-    
-                                    context.log('Documents created for '+seasonPlayer['id'])
-                                except Exception as e:
+                                #     context.log('Documents created for '+seasonPlayer['id'])
+                                # except Exception as e:
                         
-                                    context.log(f"\nError creating document:")
-                                    context.log(f"Error message: {str(e)}")
-                                    # context.log details of the problematic field
-                                    field_name = str(e).split("'")[1].split("'")[0] if "'" in str(e) else None
-                                    if field_name and field_name in seasonPlayer:
-                                        context.log(f"\nProblem field details:")
-                                        context.log(f"{field_name} type: {type(seasonPlayer[field_name])}")
-                                        context.log(f"{field_name} length: {len(str(seasonPlayer[field_name]))}")
-                                        context.log(f"Preview: {str(seasonPlayer[field_name])[:100]}...")
+                                #     context.log(f"\nError creating document:")
+                                #     context.log(f"Error message: {str(e)}")
+                                #     # context.log details of the problematic field
+                                #     field_name = str(e).split("'")[1].split("'")[0] if "'" in str(e) else None
+                                #     if field_name and field_name in seasonPlayer:
+                                #         context.log(f"\nProblem field details:")
+                                #         context.log(f"{field_name} type: {type(seasonPlayer[field_name])}")
+                                #         context.log(f"{field_name} length: {len(str(seasonPlayer[field_name]))}")
+                                #         context.log(f"Preview: {str(seasonPlayer[field_name])[:100]}...")
                         except:
-                            context.log('Check document '+ str(seasonPlayer['id']))
+
+                            try:
+                                databases.create_document(
+                                database_id=database_id,
+                                collection_id=playerStats_collection_id[i],
+                                document_id=seasonPlayer['id'],
+                                data=seasonPlayer
+                                )
+
+                                context.log('Documents created for '+seasonPlayer['id'])
+                            except Exception as e:
+                    
+                                context.log(f"\nError creating document:")
+                                context.log(f"Error message: {str(e)}")
+                                # context.log details of the problematic field
+                                field_name = str(e).split("'")[1].split("'")[0] if "'" in str(e) else None
+                                if field_name and field_name in seasonPlayer:
+                                    context.log(f"\nProblem field details:")
+                                    context.log(f"{field_name} type: {type(seasonPlayer[field_name])}")
+                                    context.log(f"{field_name} length: {len(str(seasonPlayer[field_name]))}")
+                                    context.log(f"Preview: {str(seasonPlayer[field_name])[:100]}...")
+
+                            
+                            # context.log('Check document '+ str(seasonPlayer['id']))
             except:
                 context.log('Total Player Pages is '+str(j-1)+' for league '+str(currSeasonID[i]))
                 break
