@@ -488,7 +488,7 @@ def main(context):
 
                     context.log(lastXGames['id']+' Updated')
 
-                except::
+                except:
                     try:
                         databases.create_document(
                         database_id=database_id,
