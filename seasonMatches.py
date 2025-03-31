@@ -16,7 +16,7 @@ def main(context):
     client = Client()
 
     # currSeasonID=['12325', '13284', '12451', '13303']
-    currSeasonID=['12325', '13284']
+    currSeasonID=['12325']
     # currSeasonID=['12325']
     # currSeasonNames = ['EPL_2024-2025', 'PSL_2024-2025']
     # allSeasonID = ['4759', '6135', '7704', '9660', '12325', '5225', '6311', '7851', '9814', '13284']
