@@ -18,7 +18,7 @@ def main(context):
     # currSeasonID=['12325', '13284', '12451', '13303']
     currSeasonID=['12451']
     
-    count = len(currSeasonID)
+    # count = len(currSeasonID)
     
 
     project_id = os.environ['APPWRITE_PROJECT_ID']
@@ -37,7 +37,7 @@ def main(context):
     databases = Databases(client)
     
     #Get League Matches
-    def get_league_matches(leagueID, games=500):
+    def get_league_matches(leagueID, games=560):
         url = "https://api.football-data-api.com/league-matches"
         params = {
             "key": footy_stats_key,
@@ -356,137 +356,137 @@ def main(context):
     
     
     ###### Loop starts here
-    for i in range(0,count):
+    # for i in range(0,count):
     
-        # Retrieve league matches
-        leagueMatches_data = get_league_matches(leagueID=currSeasonID[i])
-    
-        if leagueMatches_data and 'data' in leagueMatches_data:
-    
-            seasonMatchDataDF = convert_json_to_df(leagueMatches_data['data'])
-            seasonMatchDataJSON=prepare_for_appwrite(seasonMatchDataDF)
-    
-            # docIDs = get_all_document_ids(database_id, seasonMatches_collection_id[i])
-            # classifications=group_columns(leagueMatches_data['data'])
-    
-            # try:
-            #     attList = databases.list_attributes(
-            #     database_id = database_id,
-            #     collection_id= seasonMatches_collection_id[i]
-            #     )
-    
-            #     attr_categories = get_categorized_attributes(database_id, seasonMatches_collection_id[i])
-    
-            #     # context.log('Current collection has '+str(attList['total'])+' attributes')
-    
-            #     if (attList['total'] == 0):
-            #         # classifications=group_columns(leagueMatches_data['data'])
-            #         create_collection_attributes(
-            #         classifications=classifications,
-            #         database_id=database_id,
-            #         collection_id=seasonMatches_collection_id[i]
-            #         )
-            #         context.log('Initial Attributes added for '+ seasonMatches_collection_id[i])
-    
-            #     if (len(classifications['attrID']) == len(attr_categories['attrID'])):
-            #         context.log('ids category all good')
-            #     else:
-            #         missingID=list(set(classifications['attrID']) - set(attr_categories['attrID']))
-            #         # Create rowID attributes
-            #         for attrIds in missingID:
-            #             databases.create_string_attribute(  # Using string for IDs instead of float
-            #             database_id=database_id,
-            #             collection_id=seasonMatches_collection_id[i],
-            #             key=attrIds,
-            #             required=True,  # IDs should be required
-            #             size=72000  # Adjust size based on your ID format
-            #             )
-    
-            #     if (len(classifications['float']) == len(attr_categories['float'])):
-            #         context.log('float category all good')
-            #     else:
-            #         missingFloat=list(set(classifications['float']) - set(attr_categories['float']))
-            #         # Create float attributes
-            #         for attrFloats in missingFloat:
-            #             databases.create_float_attribute(
-            #             database_id=database_id,
-            #             collection_id=seasonMatches_collection_id[i],
-            #             key=attrFloats,
-            #             required=False,  # Set to false to allow null values
-            #             min=-1,  # Adjust min value based on your needs,
-            #             default=-1  # Default value when null
-            #             )
-    
-            #     if (len(classifications['array']) == len(attr_categories['array'])):
-            #         context.log('array category all good')
-            #     else:
-            #         missingArray=list(set(classifications['array']) - set(attr_categories['array']))
-            #         # Create array attributes
-            #         for attrArray in missingArray:
-            #             databases.create_string_attribute(
-            #                 database_id=database_id,
-            #                 collection_id=seasonMatches_collection_id[i],
-            #                 key=attrArray,
-            #                 required=False,  # Set to false to allow null values
-            #                 # array=True,
-            #                 size=72000 # Adjust size as needed
-            #             )
-    
-            #     if (len(classifications['string']) == len(attr_categories['string'])):
-            #         context.log('string category all good')
-            #     else:
-            #         missingString=list(set(classifications['string']) - set(attr_categories['string']))
-            
-            #         # Create string attributes
-            #         for attrString in missingString:
-            #             databases.create_string_attribute(
-            #                 database_id=database_id,
-            #                 collection_id=seasonMatches_collection_id[i],
-            #                 key=attrString,
-            #                 required=False,  # Set to false to allow null values
-            #                 default="",  # Default empty string when null
-            #                 size=72000  # Adjust size as needed
-            #         )
-    
-            # except:
-            #     context.log('Check attributes for '+ str(seasonMatches_collection_id[i]))
-    
-            for seasonMatch in seasonMatchDataJSON:
-    
-                try:
-                # if(seasonMatch['id'] in docIDs):
+    # Retrieve league matches
+    leagueMatches_data = get_league_matches(leagueID=currSeasonID[0])
 
-                    docUpdate=databases.update_document(
-                        database_id=database_id,
-                        collection_id=seasonMatches_collection_id[i],
-                        document_id=seasonMatch['id'],
-                        data=seasonMatch
+    if leagueMatches_data and 'data' in leagueMatches_data:
+
+        seasonMatchDataDF = convert_json_to_df(leagueMatches_data['data'])
+        seasonMatchDataJSON=prepare_for_appwrite(seasonMatchDataDF)
+
+        # docIDs = get_all_document_ids(database_id, seasonMatches_collection_id[i])
+        # classifications=group_columns(leagueMatches_data['data'])
+
+        # try:
+        #     attList = databases.list_attributes(
+        #     database_id = database_id,
+        #     collection_id= seasonMatches_collection_id[i]
+        #     )
+
+        #     attr_categories = get_categorized_attributes(database_id, seasonMatches_collection_id[i])
+
+        #     # context.log('Current collection has '+str(attList['total'])+' attributes')
+
+        #     if (attList['total'] == 0):
+        #         # classifications=group_columns(leagueMatches_data['data'])
+        #         create_collection_attributes(
+        #         classifications=classifications,
+        #         database_id=database_id,
+        #         collection_id=seasonMatches_collection_id[i]
+        #         )
+        #         context.log('Initial Attributes added for '+ seasonMatches_collection_id[i])
+
+        #     if (len(classifications['attrID']) == len(attr_categories['attrID'])):
+        #         context.log('ids category all good')
+        #     else:
+        #         missingID=list(set(classifications['attrID']) - set(attr_categories['attrID']))
+        #         # Create rowID attributes
+        #         for attrIds in missingID:
+        #             databases.create_string_attribute(  # Using string for IDs instead of float
+        #             database_id=database_id,
+        #             collection_id=seasonMatches_collection_id[i],
+        #             key=attrIds,
+        #             required=True,  # IDs should be required
+        #             size=72000  # Adjust size based on your ID format
+        #             )
+
+        #     if (len(classifications['float']) == len(attr_categories['float'])):
+        #         context.log('float category all good')
+        #     else:
+        #         missingFloat=list(set(classifications['float']) - set(attr_categories['float']))
+        #         # Create float attributes
+        #         for attrFloats in missingFloat:
+        #             databases.create_float_attribute(
+        #             database_id=database_id,
+        #             collection_id=seasonMatches_collection_id[i],
+        #             key=attrFloats,
+        #             required=False,  # Set to false to allow null values
+        #             min=-1,  # Adjust min value based on your needs,
+        #             default=-1  # Default value when null
+        #             )
+
+        #     if (len(classifications['array']) == len(attr_categories['array'])):
+        #         context.log('array category all good')
+        #     else:
+        #         missingArray=list(set(classifications['array']) - set(attr_categories['array']))
+        #         # Create array attributes
+        #         for attrArray in missingArray:
+        #             databases.create_string_attribute(
+        #                 database_id=database_id,
+        #                 collection_id=seasonMatches_collection_id[i],
+        #                 key=attrArray,
+        #                 required=False,  # Set to false to allow null values
+        #                 # array=True,
+        #                 size=72000 # Adjust size as needed
+        #             )
+
+        #     if (len(classifications['string']) == len(attr_categories['string'])):
+        #         context.log('string category all good')
+        #     else:
+        #         missingString=list(set(classifications['string']) - set(attr_categories['string']))
+        
+        #         # Create string attributes
+        #         for attrString in missingString:
+        #             databases.create_string_attribute(
+        #                 database_id=database_id,
+        #                 collection_id=seasonMatches_collection_id[i],
+        #                 key=attrString,
+        #                 required=False,  # Set to false to allow null values
+        #                 default="",  # Default empty string when null
+        #                 size=72000  # Adjust size as needed
+        #         )
+
+        # except:
+        #     context.log('Check attributes for '+ str(seasonMatches_collection_id[i]))
+
+        for seasonMatch in seasonMatchDataJSON:
+
+            try:
+            # if(seasonMatch['id'] in docIDs):
+
+                docUpdate=databases.update_document(
+                    database_id=database_id,
+                    collection_id=seasonMatches_collection_id[0],
+                    document_id=seasonMatch['id'],
+                    data=seasonMatch
+                )
+
+                context.log(seasonMatch['id']+' Updated')
+
+            except:
+                try:
+                    databases.create_document(
+                    database_id=database_id,
+                    collection_id=seasonMatches_collection_id[0],
+                    document_id=seasonMatch['id'],
+                    data=seasonMatch
                     )
 
-                    context.log(seasonMatch['id']+' Updated')
-
-                except:
-                    try:
-                        databases.create_document(
-                        database_id=database_id,
-                        collection_id=seasonMatches_collection_id[i],
-                        document_id=seasonMatch['id'],
-                        data=seasonMatch
-                        )
-
-                        context.log('Documents created for '+seasonMatch['id'])
-                    except Exception as e:
-             
-                        context.log(f"\nError creating document:")
-                        context.log(f"Error message: {str(e)}")
-                        # context.log details of the problematic field
-                        field_name = str(e).split("'")[1].split("'")[0] if "'" in str(e) else None
-                        if field_name and field_name in seasonMatch:
-                            context.log(f"\nProblem field details:")
-                            context.log(f"{field_name} type: {type(seasonMatch[field_name])}")
-                            context.log(f"{field_name} length: {len(str(seasonMatch[field_name]))}")
-                            context.log(f"Preview: {str(seasonMatch[field_name])[:100]}...")
-                # except:
-                #     context.log('Check document '+ str(seasonMatch['id']))
+                    context.log('Documents created for '+seasonMatch['id'])
+                except Exception as e:
+         
+                    context.log(f"\nError creating document:")
+                    context.log(f"Error message: {str(e)}")
+                    # context.log details of the problematic field
+                    field_name = str(e).split("'")[1].split("'")[0] if "'" in str(e) else None
+                    if field_name and field_name in seasonMatch:
+                        context.log(f"\nProblem field details:")
+                        context.log(f"{field_name} type: {type(seasonMatch[field_name])}")
+                        context.log(f"{field_name} length: {len(str(seasonMatch[field_name]))}")
+                        context.log(f"Preview: {str(seasonMatch[field_name])[:100]}...")
+            # except:
+            #     context.log('Check document '+ str(seasonMatch['id']))
 
     return context.res.empty()
