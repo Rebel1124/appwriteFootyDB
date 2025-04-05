@@ -37,12 +37,13 @@ def main(context):
     databases = Databases(client)
     
     #Get League Matches
-    def get_league_matches(leagueID, games=560):
+    def get_league_matches(leagueID, pageNum=1, games=300):
         url = "https://api.football-data-api.com/league-matches"
         params = {
             "key": footy_stats_key,
             "season_id": str(leagueID),
-            "max_per_page": str(games)
+            "max_per_page": str(games),
+            "page":str(pageNum)
         }
         try:
             response = requests.get(url, params=params)
