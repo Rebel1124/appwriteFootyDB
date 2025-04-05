@@ -37,7 +37,7 @@ def main(context):
     databases = Databases(client)
     
     #Get League Matches
-    def get_league_matches(leagueID, games=500):
+    def get_league_matches(leagueID, games=300):
         url = "https://api.football-data-api.com/league-matches"
         params = {
             "key": footy_stats_key,
